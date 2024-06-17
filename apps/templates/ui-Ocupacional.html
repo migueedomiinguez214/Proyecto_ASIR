@@ -1,0 +1,55 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Residencia {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<style>
+.contenedor-tabla {
+   margin: 0 auto; /* Margen automático horizontal para centrar */
+   width: 50%; /* Ancho de la tabla */
+}
+
+.mi-tabla {
+   border-collapse: collapse;
+   table-layout: fixed;
+   width: 100%; /* Ancho de la tabla al 100% del contenedor */
+}
+
+.mi-tabla td {
+   border: 3px solid black;
+   padding: 5px;
+   text-align: center;
+   font-weight: bold;
+   white-space: nowrap; /* Evitar el ajuste de texto automático */
+   overflow: hidden; /* Ocultar el texto que no cabe en la celda */
+   text-overflow: ellipsis; /* Mostrar puntos suspensivos (...) si el texto es demasiado largo */
+}
+
+.titulo {
+   background-color: purple;
+   color: white;
+   text-align: center;
+   padding: 10px;
+   margin-top: 20px;
+}
+</style>
+
+
+<h1 class="titulo">Elige el Carro:</h1>
+
+<table width="100%" height="100%" class="mi-tabla">
+
+<tr>
+    <td><a>Ocupacional</a></td>
+    <td><a href="carro9/">Carro 9</a></td>
+  </tr>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

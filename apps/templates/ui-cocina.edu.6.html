@@ -1,0 +1,196 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} COCINA {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+    .menu ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .menu ul li {
+        display: inline;
+    }
+
+    .menu ul li a {
+        text-decoration: none;
+        padding: 10px 20px;
+        color: #333; /* Color del texto */
+        background-color: #f2f2f2; /* Color de fondo */
+        border: 1px solid #333; /* Borde */
+        border-radius: 5px; /* Bordes redondeados */
+    }
+
+    .menu ul li a:hover {
+        background-color: #ddd; /* Cambio de color al pasar el ratón */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 3px solid #000; /* Borde de la tabla */
+    }
+
+    th, td {
+        border: 3px solid #000; /* Bordes de las celdas */
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+.submenu ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .submenu ul li {
+        display: inline;
+    }
+
+    .submenu ul li a {
+        text-decoration: none;
+        padding: 8px 16px;
+        color: #fff; /* Color del texto */
+        background-color: grey; /* Color de fondo */
+        border: 1px solid grey; /* Borde */
+        border-radius: 5px; /* Bordes redondeados */
+    }
+
+    .submenu ul li a:hover {
+        background-color: #45a049; /* Cambio de color al pasar el ratón */
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="menu">
+    <ul>
+        <li><a href="/cocina/">Inicio</a></li>
+        <li><a href="/cocina/educacion/">Educación</a></li>
+        <li><a href="/cocina/residencia/">Residencias</a></li>
+        <li><a href="/cocina/ocupacional/comida/9/">Ocupacional</a></li>
+        <li><a href="/cocina/unidaddia/">Unid Dia</a></li>
+    </ul>
+</div>
+
+<br>
+<h2>Lista de Carritos de Educacion</h1>
+<br>
+
+
+<div class="submenu">
+    <ul>
+        <li><a href="/cocina/educacion/comida/1/">Carrito 1</a></li>
+        <li><a href="/cocina/educacion/comida/2/">Carrito 2</a></li>
+        <li><a href="/cocina/educacion/comida/3/">Carrito 3</a></li>
+        <li><a href="/cocina/educacion/comida/4/">Carrito 4</a></li>
+        <li><a href="/cocina/educacion/comida/5/">Carrito 5</a></li>
+        <li><a href="/cocina/educacion/comida/6/">Carrito 6</a></li>
+
+    </ul>
+</div>
+<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Comidas - Carrito 1</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #8A2BE2; /* Morado */
+            color: white; /* Texto blanco */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Comidas HOY - Carrito 6 </h1>
+    
+    <h2>Comidas:</h2>
+    <table>
+        <thead>
+            <tr>
+               
+                <th>Tipo de Comida</th>
+                <th>Dieta/Alergias/Otro</th>
+                <th>Sal</th>
+                <th>Cantidad</th>
+                <th>Observaciones</th>
+              
+            </tr>
+        </thead>
+        <tbody>
+            {% for comida in comidas %}
+                <tr>
+                
+                    <td>{{ comida.tipo_comida }}</td>
+                    <td>{{ comida.dieta_aler_otro }}</td>
+                    <td>{% if comida.sal %} Sí {% else %} No {% endif %}</td>
+                    <td>{{ comida.cantidad }}</td>
+                    <td>{{ comida.observaciones }}</td>
+                   
+                    <td> <a  href="/cocina/educacion/comida/6/{{ comida.pk }}/editar/">Editar</a><td> <a href="/cocina/educacion/comida/6/{{ comida.pk }}/borrar/" style="color: red">Borrar</a></td></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">No hay comidas disponibles para hoy en este carrito.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Postres/Extras:</h2>
+    <table>
+        <thead>
+            <tr>
+               
+                <th>Tipo de Postre</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for postre in postres %}
+                <tr>
+                    
+                    <td>{{ postre.tipo_postre }}</td>
+                    <td>{{ postre.cantidad }}</td>
+                    <td> <a  href="/cocina/educacion/comida/6/postre/{{ postre.pk }}/editar/">Editar</a><td><a href="/cocina/educacion/comida/6/postre/{{ postre.pk }}/borrar/" style="color: red">Borrar</a></td></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No hay postres disponibles para hoy en este carrito.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

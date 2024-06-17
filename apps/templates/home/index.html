@@ -1,0 +1,43 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Principal {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<style>
+  .title-container {
+    text-align: center;
+  }
+  .title {
+    font-size: 40px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<div class="title-container">
+  <h1 class="title">BIENVENIDO A NUESTRA APP</h1>
+  <br></br>
+  <br></br>
+  <br></br>
+  <img src="https://upacesanfernando.org/wp-content/uploads/2018/06/logo-40.jpg" alt="...">
+</div>
+
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+{% endblock javascripts %}
