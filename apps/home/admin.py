@@ -5,11 +5,17 @@ Copyright (c) 2019 - present AppSeed.us
 
 from django.contrib import admin
 
-# Register your models here.
+from .models import Ticket
+admin.site.register(Ticket)
 
-from .models import Comida
-admin.site.register(Comida)
+from .models import Almacen
+admin.site.register(Almacen)
 
-from .models import Postre
-admin.site.register(Postre)
+from .models import Inventario
+admin.site.register(Inventario)
 
+from .models import Incidencias
+admin.site.register(Incidencias)
+
+from .models import RegistroEvento
+admin.site.register(RegistroEvento)

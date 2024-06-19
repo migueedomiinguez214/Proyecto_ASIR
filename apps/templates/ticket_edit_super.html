@@ -1,0 +1,13 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Editar Ticket {% endblock %}
+
+{% block content %}
+<h2>Editar Ticket</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar Cambios</button>
+</form>
+{% endblock %}

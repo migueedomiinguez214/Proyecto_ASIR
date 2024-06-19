@@ -1,0 +1,169 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Lista de Tickets {% endblock %} 
+
+{% block content %}
+<style>
+/* Estilos CSS */
+.container {
+    max-width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: purple;
+    font-weight: bold; /* Título en negrita */
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+.table-container {
+    flex-grow: 1;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: purple;
+    color: white;
+    font-weight: bold; /* Título en negrita */
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+button {
+    background-color: purple;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #6A1B9A;
+}
+
+/* Estilos de estado */
+.estado {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.abierto {
+    background-color: green;
+    color: black;
+}
+
+.en-proceso {
+    background-color: orange;
+    color: black;
+}
+
+.cerrado {
+    background-color: red;
+    color: black;
+}
+
+
+.alta {
+    background-color: red;
+    color: white;
+}
+
+.media {
+    background-color: orange;
+    color: white;
+}
+
+.baja {
+    background-color: green;
+    color: white;
+}
+
+.editar-link, .borrar-link {
+    color: inherit; /* Hereda el color del texto del elemento padre */
+    text-decoration: none; /* Elimina el subrayado */
+    cursor: pointer;
+    font-weight: bold; /* Letra negrita */
+}
+
+.titulo {
+    font-weight: bold;
+}
+</style>
+
+<div class="container">
+  <div class="table-container">
+    <h2>Lista de Tickets</h2>
+
+    <form method="get" action="{% url 'ticket-list' %}">
+      <label for="estado">Filtrar por Estado:</label>
+      <select name="estado" id="estado">
+        <option value="">Todos</option>
+        <option value="Abierto">Abierto</option>
+        <option value="En Proceso">En Proceso</option>
+        <option value="Cerrado">Cerrado</option>
+      </select>
+      <button type="submit">Filtrar</button>
+    </form>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Urgencia</th>
+          <th>Estado</th>
+          <th>Creado Por</th>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Anotaciones del Admin</th>
+          <th>Editar</th>
+          <th>Borrar</th>
+          <th>Exportar</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+        <tr>
+          <td class="titulo">{{ ticket.titulo }}</td>
+          <td><span class="estado {% if ticket.urgencia == 'Alta' %}alta{% elif ticket.urgencia == 'Media' %}media{% elif ticket.urgencia == 'Baja' %}baja{% endif %}">{{ ticket.urgencia }}</span></td>
+          <td><span class="estado {% if ticket.estado == 'Abierto' %}abierto{% elif ticket.estado == 'En Proceso' %}en-proceso{% elif ticket.estado == 'Cerrado' %}cerrado{% endif %}">{{ ticket.estado }}</span></td>
+          <td>{{ ticket.creado_por }}</td>
+          <td>{{ ticket.fecha|date:"d/m/Y" }}</td>
+          <td>{{ ticket.descripcion }}</td>
+          <td>{{ ticket.anotaciones }}</td>
+          <td><a href="/tickets/{{ ticket.pk }}/edit/" class="editar-link">Editar</a></td>
+          <td><a href="/tickets/{{ ticket.pk }}/delete/" class="borrar-link">Borrar</a></td>
+          <td><a href="/tickets/{{ ticket.pk }}/imprimir/" class="borrar-link">Exportar</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8">No se encontraron tickets.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}

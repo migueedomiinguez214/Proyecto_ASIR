@@ -1,75 +1,189 @@
-    <div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
-      <div class="logo">
-        <a target="_blank" rel="noopener noreferrer" 
-           href="https://appseed.us/admin-dashboards/django-dashboard-material" class="simple-text logo-normal">
-          UPACE
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración</title>
+    <!-- Agrega tus enlaces a CSS y JS aquí -->
+</head>
+<body>
+<div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
+    <div class="logo">
+        <a target="_blank" rel="noopener noreferrer" href="https://appseed.us/admin-dashboards/django-dashboard-material" class="simple-text logo-normal">
+            ADMINISTRACION
         </a>
-      </div>
-      <div class="sidebar-wrapper">
-        <ul class="nav">
-        {% if request.user.is_authenticated %}
-
-          <li class="nav-item {% if 'index' in segment %} active {% endif %}">
-            <a class="nav-link" href="/">
-              <i class="material-icons">dashboard</i>
-              <p>Pagina Principal</p>
-            </a>
-          </li>
-          <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
-            <a class="nav-link" href="user/">
-              <i class="material-icons">person</i>
-              <p>Perfil</p>
-            </a>
-          </li>
-          <li class="nav-item {% if 'ui-cocina' in segment %} active {% endif %}">
-            <a class="nav-link" href="/cocina/">
-              <i class="material-icons">content_paste</i>
-              <p>Cocina</p>
-            </a>
-          </li>
-          <li class="nav-item {% if 'ui-Educacion' in segment %} active {% endif %}">
-            <a class="nav-link" href="/educacion/">
-              <i class="material-icons">content_paste</i>
-              <p>Educacion</p>
-            </a>
-          </li>
-          
-          
-          
-          <li class="nav-item {% if 'ui-typography' in segment %} active {% endif %}">
-            <a class="nav-link" href="/residencia/">
-              <i class="material-icons">library_books</i>
-              <p>Residencia</p>
-            </a>
-          </li>
-          
-           <li class="nav-item {% if 'ui-typography' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ocupacional/">
-              <i class="material-icons">library_books</i>
-              <p>Ocupacional</p>
-            </a>
-          </li>
-
-           <li class="nav-item {% if 'ui-typography' in segment %} active {% endif %}">
-            <a class="nav-link" href="/unidaddia/">
-              <i class="material-icons">library_books</i>
-              <p>Unidad Dia</p>
-            </a>
-          </li>
-
-          <li class="nav-item ">
-            <a class="nav-link" href="{% url 'logout' %}" >
-              <i class="material-icons">directions_run</i>
-              <p>Logout</p>
-            </a>
-          </li>
-
-
-        {% else %}
-
-      
-        {% endif %}
-        </ul>
-      </div>
-
     </div>
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+            {% if request.user.is_authenticated %}
+
+            <!-- Página Principal -->
+            <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                <a class="nav-link" href="/">
+                    <i class="material-icons">dashboard</i>
+                    <p>Pagina Principal</p>
+                </a>
+            </li>
+
+            <!-- Perfil -->
+            <li class="nav-item {% if request.path == '/user/' %} active {% endif %}">
+                <a class="nav-link" href="user/">
+                    <i class="material-icons">person</i>
+                    <p>Perfil</p>
+                </a>
+            </li>
+            <li class="nav-item" style="background-color: purple; height: 1px; margin: 10px;"></li>
+            <!-- Menú desplegable de Ticket -->
+            <li class="nav-item {% if '/pedido-cocina/' in request.path %} active {% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#pedido-cocina">
+                    <i class="material-icons">list_alt</i>
+                    <p>Tickets</p>
+                    <b class="caret"></b>
+                </a>
+                <div class="collapse {% if '/pedido-cocina/' in request.path %} show {% endif %}" id="pedido-cocina">
+                    <ul class="nav">
+                        <li class="nav-item {% if 'crear-ticket/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/crear-ticket/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Crear Ticket </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {% if '/pedido-cocina/nuevo/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/tickets/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -Ver Ticket </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- Fin del menú desplegable de Ticket -->
+            <li class="nav-item" style="background-color: purple; height: 1px; margin: 10px;"></li>
+            <!-- Menú desplegable de Almacen -->
+            <li class="nav-item {% if '/almacen/' in request.path %} active {% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#almacen">
+                    <i class="material-icons">store</i>
+                    <p>Almacen</p>
+                    <b class="caret"></b>
+                </a>
+                <div class="collapse {% if '/almacen/' in request.path %} show {% endif %}" id="almacen">
+                    <ul class="nav">
+                        <li class="nav-item {% if 'crear/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/almacen-crear/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Crear Objeto </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {% if '/almacen/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/almacen/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -Ver Almacen </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {% if '/añadir-inventario/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/registros/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Registro </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- Fin del menú desplegable de Almacen -->
+            <li class="nav-item" style="background-color: purple; height: 1px; margin: 10px;"></li>
+            <!-- Menú desplegable de Inventario -->
+            <li class="nav-item {% if '/inventario/' in request.path %} active {% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#inventario">
+                    <i class="material-icons">inventory_2</i>
+                    <p>Dispositivos</p>
+                    <b class="caret"></b>
+                </a>
+                <div class="collapse {% if '/inventario/' in request.path %} show {% endif %}" id="inventario">
+                    <ul class="nav">
+                        <!-- Apartado de Inventario -->
+                        <li class="nav-item {% if '/inventario/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/inventario/list/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Dispositivos </span>
+                            </a>
+                        </li>
+                        <!-- Apartado de Añadir a Inventario -->
+                        <li class="nav-item {% if '/añadir-inventario/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/inventario/create/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Añadir a Dispositivos en Uso </span>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </li>
+            <!-- Menú desplegable de Incidencias -->
+            <li class="nav-item {% if '/incidencias/' in request.path %} active {% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#incidencias">
+                    <i class="material-icons">report</i>
+                    <p>Incidencias</p>
+                    <b class="caret"></b>
+                </a>
+                <div class="collapse {% if '/incidencias/' in request.path %} show {% endif %}" id="incidencias">
+                    <ul class="nav">
+                        <!-- Apartado de Crear Incidencia -->
+                        <li class="nav-item {% if '/crear-incidencia/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/incidencias/create/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Crear Incidencia </span>
+                            </a>
+                        </li>
+                        <!-- Apartado de Ver Incidencias -->
+                        <li class="nav-item {% if '/incidencias/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/incidencias/list/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Ver Incidencias </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+                        <li class="nav-item" style="background-color: purple; height: 1px; margin: 10px;"></li>
+                        <!-- Menú desplegable de Usuarios -->
+            <li class="nav-item {% if '/usuarios/' in request.path %} active {% endif %}">
+                <a class="nav-link" data-toggle="collapse" href="#usuario">
+                    <i class="material-icons">inventory_2</i>
+                    <p>Usuarios</p>
+                    <b class="caret"></b>
+                </a>
+                <div class="collapse {% if '/user/' in request.path %} show {% endif %}" id="usuario"> <!-- Cambio aquí -->
+                    <ul class="nav">
+                        <!-- Apartado de Crear Usuario -->
+                        <li class="nav-item {% if '/user/create/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/user/create/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Crear Usuario </span>
+                            </a>
+                        </li>
+                        <!-- Apartado de Usuarios -->
+                        <li class="nav-item {% if '/user/list/' in request.path %} active {% endif %}">
+                            <a class="nav-link" href="/user/list/">
+                                <span class="sidebar-mini">  </span>
+                                <span class="sidebar-normal"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-Usuarios </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+                        <li class="nav-item" style="background-color: purple; height: 1px; margin: 10px;"></li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="material-icons">directions_run</i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+
+                        {% else %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            </body>
+            </html>

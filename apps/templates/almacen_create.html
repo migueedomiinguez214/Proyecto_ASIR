@@ -1,0 +1,95 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Crear Almacén {% endblock %} 
+
+{% block content %}
+<style>
+/* Estilos para la caja contenedora */
+.form-container {
+    background: linear-gradient(to bottom right, #f3f3f3, #e0e0e0);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Ancho máximo de la caja */
+    margin: 0 auto; /* Centrar la caja horizontalmente */
+    border: 2px solid purple; /* Bordes de color púrpura */
+}
+
+/* Estilos para el formulario dentro de la caja */
+.form-group {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: purple;
+    font-weight: bold; /* Título en negrita */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    max-width: 400px; /* Ancho máximo para los campos */
+}
+
+button {
+    padding: 10px 20px;
+    background-color: purple;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: purple;
+}
+
+</style>
+
+<h2>Añadir a Almacén</h2>
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_tipo">Tipo</label>
+            <br>
+            {{ form.tipo }}
+        </div>
+        <div class="form-group">
+            <label for="id_proveedor">Proveedor</label>
+            {{ form.proveedor }}
+        </div>
+        <div class="form-group">
+            <label for="id_modelo">Modelo</label>
+            {{ form.modelo }}
+        </div>
+        <div class="form-group">
+            <label for="id_cantidad">Cantidad</label>
+            {{ form.cantidad }}
+        </div>
+        <div class="form-group">
+            <label for="id_estado">Estado</label>
+            {{ form.estado }}
+        </div>
+        <div class="form-group">
+            <label for="id_descripcion">Descripción</label>
+            {{ form.descripcion }}
+        </div>
+        
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+{% endblock content %}

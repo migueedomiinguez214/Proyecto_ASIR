@@ -1,0 +1,101 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} COCINA {% endblock %} 
+
+{% block content %}
+<!-- Specific Page CSS goes HERE  -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 100%;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow-x: auto; /* Agrega barra de desplazamiento horizontal si el contenido es demasiado ancho */
+    }
+
+    h1 {
+        color: purple;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: purple;
+        color: white;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .edit-btn, .delete-btn {
+        padding: 5px 10px;
+        background-color: purple;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .edit-btn:hover, .delete-btn:hover {
+        background-color: #6A1B9A;
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Incidencias</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Listado de Incidencias</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipo y Especificaciones</th>
+                    <th>Descripción</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for incidencia in incidencias %}
+                <tr>
+                    <td>{{ incidencia.tipo.tipo }} - {{ incidencia.tipo.especificaciones }}</td>
+                    <td>{{ incidencia.texto_incidencia }}</td>
+                    <td><a href="/incidencias/{{ incidencia.pk }}/update/" class="edit-btn">Editar</a></td>
+                    <td><a href="/incidencias/{{ incidencia.pk }}/delete/" class="delete-btn">Borrar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

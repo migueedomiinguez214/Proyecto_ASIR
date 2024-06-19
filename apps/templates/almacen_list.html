@@ -1,0 +1,183 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Lista de Almacenes {% endblock %} 
+
+{% block content %}
+<style>
+    /* Estilos CSS */
+    .container {
+        max-width: 100%;
+        padding: 0;
+        display: flex;
+        flex-direction: column; /* Cambiado a columna para que los elementos estén uno debajo del otro */
+    }
+    
+    h2 {
+        margin-bottom: 20px;
+        color: purple;
+        font-weight: bold; /* Título en negrita */
+    }
+    
+    form {
+        margin-bottom: 20px;
+    }
+    
+    .table-container {
+        flex-grow: 1;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+    
+    th {
+        background-color: purple;
+        color: white;
+        font-weight: bold; /* Título en negrita */
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    
+    button {
+        background-color: purple;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    
+    button:hover {
+        background-color: #6A1B9A;
+    }
+    
+    /* Estilos de estado */
+    .estado {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+    
+    .abierto {
+        background-color: green;
+        color: black;
+    }
+    
+    .en-proceso {
+        background-color: orange;
+        color: black;
+    }
+    
+    .cerrado {
+        background-color: red;
+        color: black;
+    }
+    
+    
+    .alta {
+        background-color: red;
+        color: white;
+    }
+    
+    .media {
+        background-color: orange;
+        color: white;
+    }
+    
+    .baja {
+        background-color: green;
+        color: white;
+    }
+    
+    .editar-link, .borrar-link {
+        color: inherit; /* Hereda el color del texto del elemento padre */
+        text-decoration: none; /* Elimina el subrayado */
+        cursor: pointer;
+        font-weight: bold; /* Letra negrita */
+    }
+    
+    .titulo {
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+  <h2>Inventario en Almacen</h2>
+  <div>
+    <a href="{% url 'generar_pdf_almacenes' %}" class="btn btn-primary">Generar PDF de Almacenes</a>
+</div>
+  <form method="get" action="{% url 'almacen_list' %}">
+    <label for="tipo">Filtrar por Tipo:</label> 
+    <select name="tipo" id="tipo">
+        <option value="">Todos</option>
+        <option value="Placa base">Placa base</option>
+        <option value="Procesador">Procesador</option>
+        <option value="Memoria RAM">Memoria RAM</option>
+        <option value="Disco duro">Disco duro</option>
+        <option value="Tarjeta gráfica">Tarjeta gráfica</option>
+        <option value="Fuente de alimentación">Fuente de alimentación</option>
+        <option value="Ventilador/Cooler">Ventilador/Cooler</option>
+        <option value="Carcasa/Chasis">Carcasa/Chasis</option>
+        <option value="Pantalla">Pantalla</option>
+        <option value="Batería">Batería</option>
+        <option value="Cámara">Cámara</option>
+        <option value="Altavoz">Altavoz</option>
+        <option value="Micrófono">Micrófono</option>
+        <option value="Botones">Botones</option>
+        <option value="Conector de carga">Conector de carga</option>
+        <option value="Teclado">Teclado</option>
+        <option value="Touchpad">Touchpad</option>
+        <option value="Carcasa">Carcasa</option>
+      <!-- Agrega más opciones según tus tipos de almacenes -->
+    </select>
+    <button type="submit">Filtrar</button>
+  </form>
+
+  <div class="table-container"> <!-- Cambiado a un div para contener la tabla -->
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Proveedor</th>
+          <th>Modelo</th>
+          <th>Cantidad</th>
+          <th>Estado</th>
+          <th>Descripción</th>
+          <th>Editar</th> <!-- Añadido el encabezado Editar -->
+          <th>Borrar</th> <!-- Añadido el encabezado Borrar -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for almacen in almacenes %}
+        <tr>
+          <td>{{ almacen.tipo }}</td>
+          <td>{{ almacen.proveedor }}</td>
+          <td>{{ almacen.modelo }}</td>
+          <td>{{ almacen.cantidad }}</td>
+          <td>{{ almacen.estado }}</td>
+          <td>{{ almacen.descripcion }}</td>
+          <td><a href="{% url 'almacen_edit' almacen.referencia %}" class="editar-link">Editar</a></td> <!-- Enlace para editar -->
+          <td><a href="{% url 'almacen_delete' almacen.referencia %}" class="borrar-link">Borrar</a></td> <!-- Enlace para borrar -->
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8">No se encontraron almacenes.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}
+

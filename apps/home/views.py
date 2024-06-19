@@ -16,9 +16,21 @@ from datetime import datetime
 from itertools import chain
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import get_object_or_404
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
 import os
 import csv
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import *
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
 
 
 @login_required(login_url="/login/")
@@ -31,8 +43,7 @@ def index(request):
 @login_required(login_url="/login/")
 def pages(request):
     context = {}
-    # All resource paths end in .html.
-    # Pick out the html file name from the url. And load that template.
+    
     try:
 
         load_template = request.path.split('/')[-1]
@@ -53,835 +64,419 @@ def pages(request):
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render(context, request))
 
-#VISTAS DE COCINA
-
-class ComidaListView1(ListView):
-    template_name = 'ui-cocina.edu.1.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=1, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=1, fecha__date=today)
-        return context
-
-class ComidaListView2(ListView):
-    template_name = 'ui-cocina.edu.2.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=2, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=2, fecha__date=today)
-        return context
-
-class ComidaListView3(ListView):
-    template_name = 'ui-cocina.edu.3.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=3, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=3, fecha__date=today)
-        return context
-
-class ComidaListView4(ListView):
-    template_name = 'ui-cocina.edu.4.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=4, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=4, fecha__date=today)
-        return context
-
-class ComidaListView5(ListView):
-    template_name = 'ui-cocina.edu.5.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=5, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=5, fecha__date=today)
-        return context
-
-class ComidaListView6(ListView):
-    template_name = 'ui-cocina.edu.6.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=6, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=6, fecha__date=today)
-        return context
-
-class ComidaListView7(ListView):
-    template_name = 'ui-cocina.resi.7.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=7, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=7, fecha__date=today)
-        return context
-
-class ComidaListView8(ListView):
-    template_name = 'ui-cocina.resi.8.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=8, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=8, fecha__date=today)
-        return context
-
-class ComidaListView9(ListView):
-    template_name = 'ui-cocina.ocu.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=9, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=9, fecha__date=today)
-        return context
-
-class ComidaListView10(ListView):
-    template_name = 'ui-cocina.unid.10.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=10, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=10, fecha__date=today)
-        return context
-
-class ComidaListView11(ListView):
-    template_name = 'ui-cocina.unid.11.html'
-    queryset = Comida.objects.none()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        today = datetime.now().date()
-        context['comidas'] = Comida.objects.filter(id_carrito=11, fecha__date=today)
-        context['postres'] = Postre.objects.filter(id_carrito=11, fecha__date=today)
-        return context
-
-#VISTA DE UpdateView
-
-class ComidaUpdateView1(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_1')
-   
-class ComidaUpdateView2(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_2')
-
-class ComidaUpdateView3(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_3')
-
-class ComidaUpdateView4(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_4')
-
-class ComidaUpdateView5(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_5')
-
-class ComidaUpdateView6(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_6')
-
-class ComidaUpdateView7(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_7')
-
-class ComidaUpdateView8(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_8')
-
-class ComidaUpdateView9(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_9')
-
-class ComidaUpdateView10(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_10')
-
-class ComidaUpdateView11(UpdateView):
-    model = Comida
-    fields = ["tipo_comida", "dieta_aler_otro", "sal", "observaciones", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_11')
-
-#POSTRE UpdateView
-
-class PostreUpdateView1(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreUpdateView2(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_2')
-
-class PostreUpdateView3(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_3')
-
-class PostreUpdateView4(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_4')
-
-class PostreUpdateView5(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_5')
-
-class PostreUpdateView6(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_6')
-
-class PostreUpdateView7(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_7')
-
-class PostreUpdateView8(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_8')
-
-class PostreUpdateView9(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_9')
-
-class PostreUpdateView10(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_10')
-
-class PostreUpdateView11(UpdateView):
-    model = Postre
-    fields = ["tipo_postre", "cantidad"]
-    template_name = 'ui-cocina.edu.1.edit.html'
-    success_url = reverse_lazy('comida_list_11')
-
-#VISTAS GENERICAS
-
 
 def page_user(request):
     return render(request, 'page-user.html')
 
-def educacion(request):
-    return render(request, 'ui-Educacion.html')
+def custom_logout_view(request):
+    logout(request)
+    return redirect('index')  
 
-def cocina(request):
-    return render(request, 'ui-cocina.html')
+#PERMISOS-----------------------------------------------------------------
 
-def cocinaedu(request):
-    return render(request, 'ui-cocina.edu.html')
+def informatico(user):
+    return user.groups.filter(name='informatico').exists()
 
-def cocinaresi(request):
-    return render(request, 'ui-cocina.resi.html')
+def almacen(user):
+    return user.groups.filter(name='almacen').exists()
 
-def cocinaocu(request):
-    return render(request, 'ui-cocina.ocu.html')
+def superuser(user):
+    return user.groups.filter(name='superuser').exists()
 
-def cocinaunid(request):
-    return render(request, 'ui-cocina.unid.html')
+def inventario(user):
+    return user.groups.filter(name='inventario').exists()
 
-def residencias(request):
-    return render(request, 'ui-Residencia.html')
+#TICKETS------------------------------------------------------------------
 
-def ocupacional(request):
-    return render(request, 'ui-Ocupacional.html')
-
-def unidaddia(request):
-    return render(request, 'ui-UnidadDia.html')
-
-#VISTAS DE CREAR
-
-
-class Comida1CreateView(SuccessMessageMixin, CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.1.html'
-    success_url = reverse_lazy('crear_carrito1')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-    success_message = 'La comida se agregó correctamente'
+class TicketCreateView(LoginRequiredMixin, CreateView):
+    model = Ticket
+    form_class= TicketForm
+    template_name = 'ticket_crear.html'
+    success_url = reverse_lazy('ticket-list')  
 
     def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 1
+        form.instance.creado_por = self.request.user
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=1,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
+"""
+class TicketCreateView(LoginRequiredMixin, CreateView):
+    model = Ticket
+    form_class = TicketForm
+    template_name = 'ticket_crear.html'
+    success_url = reverse_lazy('ticket-list')  # Cambia 'ticket-list' por el nombre de la URL a la que quieras redirigir después de crear un ticket
+
+    def form_valid(self, form):
+        # Asigna el usuario actual como el creador del ticket
+        form.instance.creado_por = self.request.user
+
+        # Guarda el ticket
+        super().form_valid(form)
+
+        # Envía el correo electrónico
+        send_mail(
+            'Nuevo Ticket Creado',
+            'Se ha creado un nuevo ticket.',
+            'tu_correo@dominio.com',  # Cambia 'tu_correo@dominio.com' por tu dirección de correo electrónico
+            ['correo_destino@dominio.com'],  # Cambia 'correo_destino@dominio.com' por la dirección de correo a la que quieras enviar el correo
+            fail_silently=False,
+        )
+
+        return super().form_valid(form)
+"""
+
+
+class TicketListView(LoginRequiredMixin, ListView):
+    model = Ticket
+    template_name = 'ticket_list.html'
+    context_object_name = 'tickets'
+
+    def get_queryset(self):
+        user = self.request.user
+
+        # Obtener el estado de la URL
+        estado = self.request.GET.get('estado')
+        
+        if user.is_superuser:
+            if estado:
+                return Ticket.objects.filter(estado=estado)
+            else:
+                return Ticket.objects.all()
+        else:
+            if estado:
+                return Ticket.objects.filter(creado_por=user, estado=estado)
+            else:
+                return Ticket.objects.filter(creado_por=user)
+
+@method_decorator(user_passes_test(informatico), name='dispatch')
+class TicketDeleteView(DeleteView):
+    model = Ticket
+    success_url = reverse_lazy('ticket-list')
+    template_name = 'ticket_confirm_delete.html'
+
+
+class TicketEditView(UserPassesTestMixin, UpdateView):
+    model = Ticket
+    template_name = 'ticket_edit.html'
+    fields = '__all__'  
+    success_url = reverse_lazy('ticket-list') 
+
+    def test_func(self):
+       
+        return self.request.user.groups.filter(name='super').exists()
+
+    def handle_no_permission(self):
+        return redirect('ticket-list')  
+
+    def form_valid(self, form):
+        if self.request.user.groups.filter(name='super').exists():
+            return super().form_valid(form)
+        return redirect('ticket-list') 
+
+        
+def generar_pdf_ticket(request, pk):
+    ticket = get_object_or_404(Ticket, pk=pk)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename=Ticket{pk}_informacion.pdf'
+
+    pdf = SimpleDocTemplate(response, pagesize=letter)
+
+    content = []
+
+    styles = getSampleStyleSheet()
+    style_title = styles["Title"]
+    style_title.alignment = 1  # Centrar el título
+    style_table = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),  # Color de fondo para la cabecera
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),  # Color de texto para la cabecera
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),  # Alinear a la izquierda
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),  # Color de fondo para las filas
+        ('GRID', (0, 0), (-1, -1), 0.25, colors.black)  # Líneas de la tabla más finas
+    ])
+
+    # Encabezado
+    header = Paragraph("ADMINISTRACIÓN DE INFORMÁTICA", style_title)
+    content.append(header)
+    content.append(Spacer(1, 12))  # Espacio después del encabezado
+
+    # Título del ticket
+    title = Paragraph(f"Parte del Ticket - {ticket.titulo}", style_title)
+    content.append(title)
+    content.append(Spacer(1, 12))  # Espacio después del título
+
+    # Datos del ticket
+    ticket_data = [
+        ["Título:", ticket.titulo],
+        ["Urgencia:", ticket.urgencia],
+        ["Estado:", ticket.estado],
+        ["Creado Por:", ticket.creado_por.username],
+        ["Fecha:", ticket.fecha.strftime('%d/%m/%Y %H:%M')],
+        ["Descripción:", ticket.descripcion],
+        ["Anotaciones:", ticket.anotaciones if ticket.anotaciones else "N/A"]
+    ]
+
+    tabla = Table(ticket_data, colWidths=[100, 400])  # Ancho de las columnas ajustado
+    tabla.setStyle(style_table)
+    content.append(tabla)
+
+    content.append(Spacer(1, 24))  # Espacio después de la tabla
+
+    # Información de contacto
+    contacto_info = "CONTACTO: 662082011\nmigueedomiinguez@gmail.com"
+    style_contacto = styles["Normal"]
+    style_contacto.fontSize = 12  # Tamaño de fuente más pequeño para contacto
+    content.append(Paragraph(contacto_info, style_contacto))
+
+    pdf.build(content)
+
+    return response
+
+
+#ALMACEN-------------------------------------------------------------------------------------
+
+@method_decorator(user_passes_test(almacen  ), name='dispatch')
+class AlmacenListView(LoginRequiredMixin, ListView):
+    model = Almacen
+    template_name = 'almacen_list.html'
+    context_object_name = 'almacenes'
+    ordering = ['tipo']  
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='super').exists()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        tipo = self.request.GET.get('tipo')
+        if tipo:
+            queryset = queryset.filter(tipo=tipo)
+        return queryset
+
+@method_decorator(user_passes_test(almacen  ), name='dispatch')
+class AlmacenCreateView(CreateView):
+    model = Almacen
+    fields= '__all__'
+    template_name = 'almacen_create.html'
+    success_url = reverse_lazy('almacen_list')
+
+    def form_valid(self, form):
+        almacen = form.save(commit=False)
+        almacen.save()
+        evento = f"Añadido a Almacen: {almacen}"
+        RegistroEvento.objects.create(evento=evento)
+        return super().form_valid(form)
+
+@method_decorator(user_passes_test(almacen  ), name='dispatch')
+class AlmacenEditView(View):
+    fields = '__all__'
+
+    def get(self, request, referencia):
+        almacen = get_object_or_404(Almacen, referencia=referencia)
+        form = AlmacenForm(instance=almacen)
+        return render(request, 'almacen_edit.html', {'form': form, 'almacen': almacen})
+
+    def post(self, request, referencia):
+        almacen = get_object_or_404(Almacen, referencia=referencia)
+        form = AlmacenForm(request.POST, instance=almacen)
+        if form.is_valid():
+            almacen = form.save()
+            evento = f"Editado Almacen: {almacen}"
+            RegistroEvento.objects.create(evento=evento)
+            return redirect('almacen_list')
+        return render(request, 'almacen_edit.html', {'form': form, 'almacen': almacen})
+
+@method_decorator(user_passes_test(almacen  ), name='dispatch')
+class AlmacenDeleteView(View):
+    fields = '__all__'
+
+    def get(self, request, referencia):
+        almacen = get_object_or_404(Almacen, referencia=referencia)
+        return render(request, 'almacen_confirm_delete.html', {'almacen': almacen})
+
+    def post(self, request, referencia):
+        almacen = get_object_or_404(Almacen, referencia=referencia)
+        evento = f"Eliminado de Almacen: {almacen}"
+        RegistroEvento.objects.create(evento=evento)
+        almacen.delete()
+        return redirect('almacen_list')
+
+
+def generar_pdf_almacenes(request):
+    almacenes = Almacen.objects.all()
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="almacenes.pdf"'
+
+    p = canvas.Canvas(response, pagesize=letter)
+    
+    width, height = letter
+    max_rows_per_page = 40
+    padding = 20
+    x_offset = 50
+    y_offset = 50
+    padding = 15
+    available_height = height - 2 * y_offset
+    row_height = 20
+    space_between_columns = 150
+
+    titulo = "Lista de Productos de Almacén"
+    titulo_width = p.stringWidth(titulo, "Helvetica-Bold", 16)  
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString((width - titulo_width) / 2, height - 50, titulo)  
+    fecha_actual = datetime.now().strftime("%d/%m/%Y")
+    p.setFont("Helvetica", 12)
+    p.drawString(width // 2 - 40, height - 70, f"Fecha: {fecha_actual}")
+
+    row_y = height - y_offset - padding - 50  
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(x_offset, row_y, "Tipo")
+    p.drawString(x_offset + space_between_columns, row_y, "Proveedor")
+    p.drawString(x_offset + 2 * space_between_columns, row_y, "Modelo")
+    p.drawString(x_offset + 3 * space_between_columns, row_y, "Cantidad")
+    p.drawString(x_offset + 4 * space_between_columns, row_y, "Estado")
+    p.drawString(x_offset + 5 * space_between_columns, row_y, "Descripción")
+    row_y -= row_height
+
+    for almacen in almacenes:
+        if row_y <= y_offset:
+            p.showPage()
+            p.setFont("Helvetica-Bold", 12)
+            row_y = height - y_offset - padding
+            p.drawString(x_offset, row_y, "Tipo")
+            p.drawString(x_offset + space_between_columns, row_y, "Proveedor")
+            p.drawString(x_offset + 2 * space_between_columns, row_y, "Modelo")
+            p.drawString(x_offset + 3 * space_between_columns, row_y, "Cantidad")
+            p.drawString(x_offset + 4 * space_between_columns, row_y, "Estado")
+            p.drawString(x_offset + 5 * space_between_columns, row_y, "Descripción")
+            row_y -= row_height
+
+        p.setFont("Helvetica", 12)
+        p.drawString(x_offset, row_y, str(almacen.tipo))
+        p.drawString(x_offset + space_between_columns, row_y, str(almacen.proveedor))
+        p.drawString(x_offset + 2 * space_between_columns, row_y, str(almacen.modelo))
+        p.drawString(x_offset + 3 * space_between_columns, row_y, str(almacen.cantidad))
+        p.drawString(x_offset + 4 * space_between_columns, row_y, str(almacen.estado))
+        p.drawString(x_offset + 5 * space_between_columns, row_y, str(almacen.descripcion))
+        row_y -= row_height
+
+    p.showPage()
+    p.save()
+    return response
+
+class RegistroEventoListView(ListView):
+    model = RegistroEvento
+    template_name = 'pagina_registros.html'
+    context_object_name = 'registros'
+    ordering = ['-fecha_hora']
+
+
+
+#USUARIOS-----------------------------------------------------------------------------------------
+
+@method_decorator(user_passes_test(superuser  ), name='dispatch')
+class CustomUserCreateView(CreateView):
+    model = User
+    fields = ['username', 'password', 'first_name', 'last_name','is_superuser', 'is_staff', 'is_active']
+    template_name = 'user_create.html'
+    success_url = '/user/create/'
+
+@method_decorator(user_passes_test(superuser  ), name='dispatch')
+class CustomUserListView(ListView):
+    model = User
+    template_name = 'user_list.html'
+    context_object_name = 'users'
+
+@method_decorator(user_passes_test(superuser  ), name='dispatch')
+class CustomUserUpdateView(UpdateView):
+    model = User
+    fields = ['username', 'password', 'first_name', 'last_name', 'is_superuser', 'is_staff', 'is_active']
+    template_name = 'user_update.html'
+    success_url = reverse_lazy('list_users')  
+
+@method_decorator(user_passes_test(superuser  ), name='dispatch')
+class CustomUserDeleteView(DeleteView):
+    model = User
+    template_name = 'user_confirm_delete.html'
+    success_url = reverse_lazy('list_users') 
+
+def search_users(request):
+    query = request.GET.get('search')
+    if query:
+        users = User.objects.filter(username__icontains=query)
+    else:
+        users = User.objects.all()
+    return render(request, 'user_list.html', {'users': users})
+
+
+#INVENTARIO----------------------------------------------------------------------------------------
+
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class InventarioListView(ListView):
+    model = Inventario
+    template_name = 'inventario_list.html'
+    context_object_name = 'inventarios'
+
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class InventarioCreateView(LoginRequiredMixin, CreateView):
+    model = Inventario
+    fields = ['tipo', 'especificaciones', 'puesto','usuario', 'estado', 'activo']
+    template_name = 'inventario_create.html'
+    success_url = reverse_lazy('inventario_list')
 
     
 
-class Comida2CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.2.html'
-    success_url = reverse_lazy('crear_carrito2')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class InventarioDeleteView(DeleteView):
+    model = Inventario
+    template_name = 'inventario_confirm_delete.html'
+    success_url = reverse_lazy('inventario_list')
+
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class InventarioUpdateView(UpdateView):
+    model = Inventario
+    fields = ['tipo', 'especificaciones', 'puesto', 'usuario', 'estado', 'activo']
+    template_name = 'inventario_update.html'
+    success_url = reverse_lazy('inventario_list')
+
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class IncidenciasListView(ListView):
+    model = Incidencias
+    template_name = 'incidencias_list.html'
+    context_object_name = 'incidencias'
+
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class IncidenciasCreateView(CreateView):
+    model = Incidencias
+    fields = ['tipo', 'texto_incidencia']
+    template_name = 'incidencias_create.html'
+    success_url = reverse_lazy('incidencias_list')
+
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class IncidenciasDeleteView(DeleteView):
+    model = Incidencias
+    template_name = 'incidencias_confirm_delete.html'
+    success_url = reverse_lazy('incidencias_list')
+
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class IncidenciasUpdateView(UpdateView):
+    model = Incidencias
+    fields = ['tipo', 'texto_incidencia']
+    template_name = 'incidencias_update.html'
+    success_url = reverse_lazy('incidencias_list')
+
+@method_decorator(user_passes_test(inventario  ), name='dispatch')
+class IncidenciaCreateView(CreateView):
+    model = Incidencias
+    template_name = 'crear_incidencia.html'
+    fields = ['texto_incidencia']
 
     def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 2
+        inventario_id = self.kwargs['inventario_id']
+        inventario = Inventario.objects.get(pk=inventario_id)
+        form.instance.tipo = inventario
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=2,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-class Comida3CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.3.html'
-    success_url = reverse_lazy('crear_carrito3')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 3
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=3,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-
-class Comida4CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.4.html'
-    success_url = reverse_lazy('crear_carrito4')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 4
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=4,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-class Comida5CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.5.html'
-    success_url = reverse_lazy('crear_carrito5')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 5
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=5,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-   
-
-class Comida6CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.6.html'
-    success_url = reverse_lazy('crear_carrito6')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 6
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=6,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-
-class Comida7CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.7.html'
-    success_url = reverse_lazy('crear_carrito7')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 7
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=7,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-
-class Comida8CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.8.html'
-    success_url = reverse_lazy('crear_carrito8')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 8
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=8,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-
-class Comida9CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.9.html'
-    success_url = reverse_lazy('crear_carrito9')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 9
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=9,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-
-class Comida10CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.10.html'
-    success_url = reverse_lazy('crear_carrito10')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 10
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=10,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-
-class Comida11CreateView(CreateView):
-    model = Comida
-    fields = ['tipo_comida', 'dieta_aler_otro', 'sal', 'observaciones', 'cantidad']
-    template_name = 'ui-Educacion.11.html'
-    success_url = reverse_lazy('crear_carrito11')  # Reemplaza 'nombre_de_la_vista' con el nombre de tu vista
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 11
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        comidas_hoy = Comida.objects.filter(id_carrito=11,fecha__date=today)
-        context['comidas_hoy'] = comidas_hoy
-        return context
-
-
-#VISTAS DE EDUCACION Postre
-
-
-class Postre1CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P1.html'
-    success_url = reverse_lazy('crear_carrito1')
-
-    def form_valid(self, form):
-        # Establecer id_carrito como 1
-        form.instance.id_carrito = 1
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=1,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre2CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P2.html'
-    success_url = reverse_lazy('crear_carrito2')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 2
-        return super().form_valid(form)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=2,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre3CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P3.html'
-    success_url = reverse_lazy('crear_carrito3')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 3
-        return super().form_valid(form)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=3,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre4CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P4.html'
-    success_url = reverse_lazy('crear_carrito4')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 4
-        return super().form_valid(form)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=4,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-# Repetir para los carritos 5 al 11 cambiando los números en cada clase y en las URLs de éxito
-
-class Postre5CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P5.html'
-    success_url = reverse_lazy('crear_carrito5')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 5
-        return super().form_valid(form)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=5,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre6CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P6.html'
-    success_url = reverse_lazy('crear_carrito6')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 6
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=6,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre7CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P7.html'
-    success_url = reverse_lazy('crear_carrito7')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 7
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=7,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre8CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P8.html'
-    success_url = reverse_lazy('crear_carrito8')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 8
-        return super().form_valid(form)
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=8,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre9CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P9.html'
-    success_url = reverse_lazy('crear_carrito9')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 9
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=9,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre10CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P10.html'
-    success_url = reverse_lazy('crear_carrito10')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 10
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=10,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-class Postre11CreateView(CreateView):
-    model = Postre
-    fields = ['tipo_postre', 'cantidad']
-    template_name = 'ui-Educacion.P11.html'
-    success_url = reverse_lazy('crear_carrito11')
-
-    def form_valid(self, form):
-        form.instance.id_carrito = 11
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filtrar las comidas por la fecha de hoy
-        today = datetime.now().date()
-        postre_hoy = Postre.objects.filter(id_carrito=11,fecha__date=today)
-        context['postre_hoy'] = postre_hoy
-        return context
-
-#VISTAS DE DeleteView
-
-class ComidaDeleteView1(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView2(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView3(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView4(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView5(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView6(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView7(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView8(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView9(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView10(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class ComidaDeleteView11(DeleteView):
-    model = Comida
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-#postre
-class PostreDeleteView1(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView2(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView3(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView4(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView5(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView6(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView7(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView8(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView9(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView10(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
-class PostreDeleteView11(DeleteView):
-    model = Postre
-    template_name = 'ui-cocina.edu.2.delete.html'
-    success_url = reverse_lazy('comida_list_1')
-
+    def get_success_url(self):
+        inventario_id = self.kwargs['inventario_id']
+        return reverse_lazy('incidencias_list', kwargs={'pk': inventario_id})

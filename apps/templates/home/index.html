@@ -2,42 +2,94 @@
 
 {% block title %} Principal {% endblock %} 
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
-
 {% block content %}
 <style>
-  .title-container {
-    text-align: center;
+  /* Estilos para el contenedor principal */
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
   }
+
+  /* Estilos para el título */
   .title {
     font-size: 40px;
     font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Estilos para la imagen */
+  .main-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border: 5px solid purple; /* Borde morado de 5px */
+  }
+
+  /* Estilos para el contenedor de cajas */
+  .boxes-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  /* Estilos para cada caja */
+  .box {
+    flex: 1;
+    margin: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .box img {
+    width: 100%;
+    max-width: 150px;
+    height: 150px; /* Tamaño fijo para las imágenes */
+    object-fit: cover; /* Para mantener la proporción de la imagen */
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  /* Estilos para el mensaje inferior */
+  .footer-message {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666;
   }
 </style>
 </head>
 <body>
-<div class="title-container">
-  <h1 class="title">BIENVENIDO A NUESTRA APP</h1>
-  <br></br>
-  <br></br>
-  <br></br>
-  <img src="https://upacesanfernando.org/wp-content/uploads/2018/06/logo-40.jpg" alt="...">
+<div class="main-container">
+  <h1 class="title">¡BIENVENIDO A NUESTRA APP!</h1>
+
+  <div class="boxes-container">
+    <div class="box">
+      <img src="https://cloudmlmsoftware.com/sites/all/themes/cloudmlm/assets/images/features/ticketIntro.webp" alt="Administración de Tickets">
+      <h2>Administración de Tickets</h2>
+      <p>Gestiona y organiza tus tickets de manera eficiente con nuestra herramienta avanzada de administración de tickets.</p>
+    </div>
+    <div class="box">
+      <img src="https://www.elementlogic.es/wp-content/uploads/sites/14/2023/10/warehouse-control-system-scaled-1.jpg" alt="Almacén">
+      <h2>Almacén</h2>
+      <p>Mantén el control de tu inventario y organiza tu almacén con nuestro sistema de gestión de almacenes.</p>
+    </div>
+    <div class="box">
+      <img src="https://www.observatoriorh.com/wp-content/uploads/2015/03/dispositivos_moviles_orh.jpg" alt="Uso de Dispositivos">
+      <h2>Uso de Dispositivos</h2>
+      <p>Realiza un seguimiento detallado tus dispositivos y sus usuarios.</p>
+    </div>
+  </div>
+  <p class="footer-message">Creado y Diseñado por Miguel Ángel Peralta Dominguez</p>
 </div>
-
-
-
 {% endblock content %}
-
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
-
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      md.initDashboardPageCharts();
-
-    });
-  </script>
-
-{% endblock javascripts %}

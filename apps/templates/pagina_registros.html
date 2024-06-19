@@ -1,0 +1,132 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Registros de Eventos{% endblock %} 
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="mt-4 title">Registros de Eventos</h1>
+            <div class="card mb-4">
+                <div class="card-header">
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-lg-3">
+                            <div class="filter-container">
+                                <button id="selectMonthButton" class="btn-purple">Filtrar por Mes</button>
+                                <select id="selectMonth" class="form-select" aria-label="Select Month">
+                                    <option value="">Seleccionar Mes</option>
+                                    <option value="enero">Enero</option>
+                                    <option value="febrero">Febrero</option>
+                                    <option value="marzo">Marzo</option>
+                                    <option value="abril">Abril</option>
+                                    <option value="mayo">Mayo</option>
+                                    <option value="junio">Junio</option>
+                                    <option value="julio">Julio</option>
+                                    <option value="agosto">Agosto</option>
+                                    <option value="septiembre">Septiembre</option>
+                                    <option value="octubre">Octubre</option>
+                                    <option value="noviembre">Noviembre</option>
+                                    <option value="diciembre">Diciembre</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha y Hora</th>
+                                    <th>Evento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for registro in registros %}
+                                <tr>
+                                    <td>{{ registro.fecha_hora|date:"d/F/Y H:i:s" }}</td>
+                                    <td>{{ registro.evento }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block stylesheets %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+    .container-fluid {
+        padding: 20px;
+    }
+
+    .title {
+        color: purple;
+        font-size: 24px;
+    }
+
+    .filter-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-purple {
+        background-color: purple;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .btn-purple:hover {
+        background-color: #7a52cc;
+    }
+
+    .form-select {
+        display: none;
+        margin-left: 10px;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block javascripts %}
+<script>
+    document.getElementById('selectMonthButton').addEventListener('click', function() {
+        var selectMonth = document.getElementById('selectMonth');
+        if (selectMonth.style.display === 'none' || selectMonth.style.display === '') {
+            selectMonth.style.display = 'block';
+        } else {
+            selectMonth.style.display = 'none';
+        }
+    });
+
+    document.getElementById('selectMonth').addEventListener('change', function() {
+        var selectedMonth = this.value;
+        var tableRows = document.querySelectorAll('#dataTable tbody tr');
+
+        tableRows.forEach(function(row) {
+            var rowDate = new Date(row.cells[0].textContent);
+            var rowMonth = rowDate.toLocaleString('es', { month: 'long' }).toLowerCase();
+            
+            if (selectedMonth === '') {
+                row.style.display = '';
+            } else if (rowMonth !== selectedMonth) {
+                row.style.display = 'none';
+            } else {
+                row.style.display = '';
+            }
+        });
+    });
+</script>
+{% endblock javascripts %}
